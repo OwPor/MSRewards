@@ -4,8 +4,7 @@ from tkinter.font import Font
 import pyautogui as pyag
 import keyboard as kb
 from pynput import keyboard, mouse
-from wonderwords import RandomWord
-import time
+import random
 
 urlx = 0
 urly = 0
@@ -29,13 +28,20 @@ def getUrlPos():
     mb.showinfo('URL Position', 'X: ' + str(urlx) + ', Y: ' + str(urly))
 
 def search(times):
+    
     def perform_action():
+        with open('words.txt', 'r') as f:
+            l = next(f)
+            for num, line in enumerate(f, 2):
+                if random.randrange(num):
+                    continue
+                l = line
         global running, scheduled_event
         nonlocal i
         
-        rwg = RandomWord()
+        rwg = l
         pyag.click(urlx, urly)
-        kb.write(rwg.random_words())
+        kb.write(rwg)
         kb.write(' ')
         kb.press_and_release('Backspace')
         kb.press_and_release('Enter')
