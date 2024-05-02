@@ -1,3 +1,4 @@
+# python -m PyInstaller main.py --windowed --onefile --icon="icon.ico"
 import tkinter as tk
 from tkinter import messagebox as mb
 from tkinter.font import Font
@@ -53,17 +54,25 @@ def search(times):
                 root.after(1000)
                 mb.showinfo('Done!', 'Times: ' + str(times))
             return
-        scheduled_event = root.after(7000, perform_action)
+        scheduled_event = root.after(delay, perform_action)
     i = 0
     perform_action()
 
 def start():
-    global running, counts
+    global running, counts, delay
     running = True
     counts = sp.get()
+    delay = de.get()
+
     if int(counts) == 0:
         mb.showinfo('Times', 'Enter how many times first')
         return
+    
+    if int(delay) == 0:
+        mb.showinfo('Delay', 'Enter delay time first')
+        return
+
+    delay = int(delay) * 1000  
     
     if urlx == 0 and urly == 0:
         mb.showinfo('Set Position', 'Set positions first')
@@ -80,7 +89,7 @@ def cancel():
 
 root = tk.Tk()
 root.resizable(False, False)
-root.geometry('300x270')
+root.geometry('300x350')
 root.iconbitmap('icon.ico')
 root.title('Auto Search by OwPor')
 
@@ -88,6 +97,11 @@ label = tk.Label(root, text='How many times?:', font=('Times New Roman', 12))
 label.pack(padx=10, pady=8)
 sp = tk.Spinbox(root, width=5, from_=0, to=100, wrap=True, font=Font(family='Helvetica', size=14))
 sp.pack()
+
+label = tk.Label(root, text='Delay:', font=('Times New Roman', 12))
+label.pack(padx=10, pady=8)
+de = tk.Spinbox(root, width=5, from_=0, to=100, wrap=True, font=Font(family='Helvetica', size=14))
+de.pack()
 
 label = tk.Label(root, text='Press K when button is clicked to set position', font=('Times New Roman', 12))
 label.pack(padx=10, pady=8)
